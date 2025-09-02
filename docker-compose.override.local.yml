@@ -1,0 +1,45 @@
+x-network:
+  - &network
+    networks:
+      - askara_net
+
+services:
+  whisper-asr-webservice:
+    restart: no
+    build:
+      context: .
+      dockerfile: Dockerfile.gpu
+    container_name: askara_whisper_asr
+    environment:
+      - ASR_MODEL=large-v3
+      - ASR_ENGINE=whisperx
+      - ASR_DEVICE=cuda
+      # Best Practice: Configure idle timeouts to save GPU memory
+      # Unloads the model from memory after 1800 seconds (30 minutes) of inactivity
+      # Disable for now - https://github.com/ahmetoner/whisper-asr-webservice/issues/321
+      - MODEL_IDLE_TIMEOUT=0
+      # HuggingFace token
+      # @see https://ahmetoner.com/whisper-asr-webservice/environmental-variables/#hugging-face-token
+      - HF_TOKEN=ChangeMe
+    volumes:
+      # Best Practice: Persist the downloaded model cache
+      # This prevents the model from re-downloading on every container restart
+      - ./cache:/root/.cache
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=askara_net"
+      - "traefik.http.routers.askara_whisper_asr.rule=Host(`asr.askara.loc`)"
+      - "traefik.http.routers.askara_whisper_asr.tls=true"
+      - "traefik.http.services.askara_whisper_asr.loadbalancer.server.port=9000"
+    <<: *network
+
+networks:
+  askara_net:
+    external: true

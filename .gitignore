@@ -18,6 +18,9 @@ pip-log.txt
 .coverage
 .pytest_cache
 
+# docker
+docker-compose.override.yml
+
 .DS_Store
 .idea/*
 .python-version

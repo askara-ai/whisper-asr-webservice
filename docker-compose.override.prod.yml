@@ -56,3 +56,15 @@ services:
             - driver: nvidia
               count: all
               capabilities: [gpu]
+
+  nginx:
+    image: nginx:latest
+    container_name: askara_whisper_reverse_proxy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - ./docker/nginx/whisper_proxy.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - whisper-asr-webservice
+      - whisper-asr-webservice-2

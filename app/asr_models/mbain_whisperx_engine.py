@@ -56,7 +56,7 @@ class WhisperXASR(ASRModel):
             if self.model is None:
                 self.load_model()
 
-        options_dict = {"task": task}
+        options_dict = {"task": task, "batch_size": 8}
         if language:
             options_dict["language"] = language
         if initial_prompt:

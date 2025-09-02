@@ -53,7 +53,7 @@ class WhisperXASR(ASRModel):
     ):
         self.last_activity_time = time.time()
         with self.model_lock:
-            if self.model is None:
+            if self.model['whisperx'] is None:
                 self.load_model()
 
         options_dict = {"task": task}
@@ -96,7 +96,7 @@ class WhisperXASR(ASRModel):
 
     def language_detection(self, audio):
         with self.model_lock:
-            if self.model is None:
+            if self.model['whisperx'] is None:
                 self.load_model()
             if audio.shape[0] < N_SAMPLES:
                 print("Warning: audio is shorter than 30s, language detection may be inaccurate.")

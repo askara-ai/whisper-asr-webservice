@@ -62,7 +62,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.gpu
-    container_name: askara_whisper_asr_2
+    container_name: askara_whisper_asr_3
     environment:
       - ASR_MODEL=large-v3-turbo
       - ASR_ENGINE=whisperx

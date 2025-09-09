@@ -46,3 +46,14 @@ source $HOME/.zshrc
 
 Copy the content of the `.p10k.zsh` file into `$HOME/.p10k.zsh`
 Replace `askara-NAME ENV` with the name of the server and the env.
+
+
+Add some custom aliases in `$HOME/.zshrc` :
+
+```
+# @see https://stackoverflow.com/a/79601412/1756667
+alias dcu="docker compose up -d"
+alias dcs="docker compose stop"
+alias dcex="docker compose exec"
+alias dcl="docker compose logs --tail=10 -f"
+```
